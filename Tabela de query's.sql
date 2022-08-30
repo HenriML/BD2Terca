@@ -4,6 +4,7 @@
 
 #           Alunos avaliados:  Sabrina Moura Gandra    GU3021114
 #					           Henrique Munhoz Leite   GU3020185
+#								Turma: 2
 
 #--------------------------------------------------------------------------------------------------
 #Query 1 - Mostra os empregados que estão na região de WA (Washington)
@@ -107,14 +108,14 @@ SELECT * FROM shippers;
 
 
 #---------------------------------------------------------------------------------------------------
-#14 Buscar nome, sobrenome e data dos pedidos com Inner Join
+#Query 14 - Buscar nome, sobrenome e data dos pedidos com Inner Join
 
 select FirstName, LastName, OrderDate
 	from employees inner join
 	orders on employees.EmployeeID = orders.EmployeeID
     where title = 'Owner';
 #---------------------------------------------------------------------------------------------------
-#15 Buscar produto da categoria 2
+#Query 15 - Buscar produto da categoria 2
 SELECT ProductName as "Produtos da Categoria"
 FROM products
 WHERE CategoryID like '2%'
@@ -122,7 +123,7 @@ group by ProductName;
 
 
 #---------------------------------------------------------------------------------------------------
-#16 SubQuery
+#Query 16 - SubQuery
 
 SELECT 
     EmployeeID, FirstName , LastName, Salary
@@ -137,7 +138,7 @@ ORDER BY FirstName , LastName;
 
 #---------------------------------------------------------------------------------------------------
 
-#17 Buscar o ID doempregados jusnto com o ID das ordens utilizando exist
+#Query 17 - Buscar o ID doempregados jusnto com o ID das ordens utilizando exist
 
 SELECT 
     OrderID, EmployeeID
@@ -155,7 +156,7 @@ ORDER BY OrderID;
 
 #---------------------------------------------------------------------------------------------------
 
-#18 Subquery Select EmployeeID, FirstName, LastName, Salary com salário igual o maior que o menos salário
+#Query 18 - Subquery Select EmployeeID, FirstName, LastName, Salary com salário igual o maior que o menos salário
 
 SELECT 
     EmployeeID, FirstName, LastName, Salary
@@ -171,7 +172,7 @@ ORDER BY FirstName , LastName;
 
 #---------------------------------------------------------------------------------------------------
 
-#19 Consulta CTE 
+#Query 19 - Consulta CTE 
 WITH ConsultaCTE(ProductName, UnitPrice, CompanyName, Quantidade) 
 AS (SELECT A.ProductName, A.UnitPrice, B.CompanyName,
 	ROW_NUMBER() OVER( PARTITION BY A.ProductName ORDER BY B.CompanyName) Quantidade
@@ -185,7 +186,7 @@ where Quantidade > 0;
 
 #---------------------------------------------------------------------------------------------------
 
-#20 Produtos entre A e Z
+#Query 20 - Produtos entre A e Z
 select *
 from products
 where ProductName between 'A' and 'Z'
@@ -193,7 +194,7 @@ order by ProductName;
 
 #---------------------------------------------------------------------------------------------------
 
-#21 Union
+#Query 21 - Union - Mostra a intersecção entre duas ou mais tabelas (neste caso, entre as tabelas customerdemographics e employeeterritories)
 SELECT *
 FROM customerdemographics
 UNION
@@ -203,24 +204,24 @@ FROM employeeterritories;
 
 #---------------------------------------------------------------------------------------------------
 
-#22 Informa a quantidade de linhas da tabela
+#Query 22 - Informa a quantidade de linhas da tabela
 select count(*) AS TotalLinhas
 from shippers;
 
 #---------------------------------------------------------------------------------------------------
 
-#23 Media salarial
+#Query 23 - Media salarial
 select CAST(AVG(salary) AS DECIMAL (9,2)) AS MediaSalarial
 from employees;
 
 #---------------------------------------------------------------------------------------------------
 
-#24 Exibir a quantidade de employees de USA.
+#Query 24 - Exibir a quantidade de employees de USA.
 SELECT COUNT(DISTINCT employeeID) as "Quantidade de empregados de USA:" FROM employees
 WHERE Country = 'USA';
 
 #---------------------------------------------------------------------------------------------------
-#25
+#Query 25 - É usado um inner join para exemplificar as colunas ShipNane, First e Last name das tabelas orders e employees ordenadas pelo ShipName de forma ascendente.
 SELECT orders.ShipName as "ShipName do funcionário", 
        employees.FirstName as "Nome do funcionário", 
        employees.LastName as "Sobrenome do funcionário"
@@ -232,7 +233,7 @@ order by ShipName asc;
 
 #---------------------------------------------------------------------------------------------------
 
-#26 Buscar Pedido por data
+#Query 26 - Buscar Pedido por data
 SELECT employees.FirstName as "Nome do funcionário", 
        orders.CustomerID as "ID", 
        orders.OrderDate as "Data"
@@ -242,22 +243,45 @@ ON employees.EmployeeID = orders.EmployeeID
 order by OrderDate  asc;
 
 #---------------------------------------------------------------------------------------------------
-#27
+#Query 27 - Um right join que mostra os resultados comparativos entre ambas as tabelas (shippers e suppliers)
 
-SELECT * FROM salaries AS S
-RIGHT JOIN employees AS E
-ON S.emp_no = E.emp_no
-order by salary desc;
+SELECT * FROM shippers AS S
+RIGHT JOIN suppliers AS E
+ON S.ShipperID = E.SupplierID
+order by Address desc;
 
-#---------------------------------------------------------------------------------------------------
 
-#28
 
 #---------------------------------------------------------------------------------------------------
+#Query 28 - Left join que mostra que a tabela a esquerda (left join) está comparando dados com a tabela a direita. Como ela não acha os resultados, devolve uma tabela nula
 
-#29
+SELECT * FROM employees;
+SELECT * FROM customers;
+
+SELECT *
+FROM employees
+LEFT OUTER JOIN customers
+ON employees.employeeID=customers.CustomerID;
+
 
 #---------------------------------------------------------------------------------------------------
+#Query 29 - Right join mostrando o resultado oposto do de cima, mostrando que agora a tabela Customers é a tabela que está comparando e não achando nenhum resultado ou similaridade
 
-#30
+
+SELECT *
+FROM employees
+RIGHT OUTER JOIN customers
+ON employees.employeeID=customers.CustomerID;
+
+
+#---------------------------------------------------------------------------------------------------
+#Query 30 - FULL join feito com left join e right join gerando mescla entre as três tabelas (orders, categories e region) e linkando compartilhamento de dados entre elas
+SELECT *
+FROM categories AS A
+LEFT JOIN region AS B
+ON A.Picture = B.RegionID
+RIGHT JOIN orders C	
+ON C.EmployeeID = A.Picture
+
+
 

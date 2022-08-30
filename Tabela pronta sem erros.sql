@@ -1,4 +1,7 @@
 
+DROP DATABASE northwind;
+
+CREATE DATABASE northwind;
 
 USE northwind;
 
